@@ -1,0 +1,133 @@
+\documentclass{aa}
+\usepackage[varg]{txfonts}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{subfig}    %% For generating a grid of figures.
+%% \newsavebox\mybox   %% For generating figure captions which wrap at figure 
+%% edges.
+%% \newlength\myboxlen
+%% \newcommand{\figcap}[2]
+%% {%
+%%   \sbox\mybox{#1}
+%%   \settowidth{\myboxlen}{\usebox{\mybox}}
+%%   \centering
+%%   \usebox\mybox
+%%   \hskip \textwidth
+%%   \parbox{\myboxlen}{#2}
+%% }
+
+\usepackage{bm}
+\bibpunct{(}{)}{;}{a}{}{,} % to follow the A&A style
+\begin{document}
+
+\title{Optimal Imaging for Real-time transient detection with the AARTFAAC Array}
+
+\author{Peeyush Prasad  \inst{1,2} \and Stefan J. Wijnholds  \inst{2} 
+\and Ralph  Wijers  \inst{1}} \institute{Universiteit  van
+  Amsterdam \and ASTRON, The Netherlands Foundation for Radio Astronomy}
+
+\date{Received <date> / Accepted <date>}
+
+%% Structured abstract
+\abstract{The  Amsterdam-ASTRON Radio  Transients Facility  And  Analysis Center
+  (AARTFAAC) array  is a sensitive, all-sky  monitor based on  the Low Frequency
+  Array (LOFAR).   It will  be among the  first image plane  transient detectors
+  continuously  monitoring the  low frequency  radio  sky for  short and  bright
+  transients,  and will  provide low  latency  triggers to  LOFAR for  follow-up
+  potential transients  with high sensitivity and resolution.  The instrument is
+  ideal for  an imaging detector due  to its excellent  aperture filling factor,
+  snapshot imaging sensitivity and all-sky field of view.STOP.START We  describe our approach  to low latency  imaging within the  near real-time,
+  autonomous  calibration and  imaging  pipeline of  the  monitor.  We  evaluate
+  various imaging  parameters for optimized point-source  sensitivity across the
+  field  of view and  minimal latency.   We quantify  the imaging  and transient
+  detection  sensitivity of  the monitor  on  test observations,  and present  a
+  sensitivity map of a 24-scan of the zenith. We further compare the performance
+  of our imager against standard imagers. Finally, we present a viable interface
+  to the image plane transient  detection component of our pipeline, and discuss
+  the impact of the imaging mechanism on transient detection sensitivity.STOP.START Snapshot  imaging and the array being  coplanar to high accuracy  imply that a
+  2-D visibility  Fourier Transform can generate  all-sky, azimuthally projected
+  images  with high  fidelity.  We  utilize  a linear  interpolation scheme  for
+  gridding visibilities, and  a Gaussian surface of revolution  for tapering the
+  shortest  baselines. This  implements a  spatial filter  for  extremely bright
+  diffuse and  extended emission with  minimum distortion. We further  produce a
+  primary beam corrected, facetted  mosaic, giving us uniform sensitivity across
+  the field  of view. We  propose a method  of creating difference  images which
+  allows close to thermal noise limited imaging.STOP.START We  find that the instrument  has a confusion  noise limit of $\sim$10  Jy per
+  calibration unit. This  reduces to close to the thermal  limit of $\sim$2-3 Jy
+  in difference  images.  We  find that  the most sensitive  regions of  the sky
+  visible to the  monitor lie between RA TODO-TODO, where  the measured noise is
+  TODO. Our  real-time, optimized imager  can produce images collapsed  over 200
+  kHz in TODO sec.STOP}
+\keywords{Radio Interferometry - Imaging - Radio Transients}
+
+\maketitle
+
+\section{\label{sec:Introduction}Introduction}
+The   detection  of  fast   ($\sim$seconds  or   lower)  radio   transients  has
+traditionally been carried out via timeseries analysis of beamformed data, while
+image mode  searches have been  limited to that  of slow ($\sim$days,  months or
+higher)  transients. This,  despite the  fact  that beamformed  modes can  offer
+either high  resolution and sensitivity within  a small field  of view (coherent
+beamforming), or a large field of view, but with correspondingly low sensitivity
+(incoherent  beamforming).   On  the   other  hand,  imaging  offers  both  high
+resolution,  sensitivity  and  field  of  view[SIRA]. This  dichotomy  has  been
+primarily caused  due to the time  consuming process of  calibrating and imaging
+from  an  aperture synthesis  instrument,  apart from  the  poor  short term  UV
+coverage of traditional arrays, which  depend on earth rotation to improve their
+aperture filling  factor.  Recent discoveries  of short radio bursts  of unknown
+origin [Lorimer, Thornton]  have necessitated the need to  carry out an unbiased
+sky  monitoring for  the detection  of  their low  frequency counterparts.   The
+transient  detection   sensitivity  of  an  instrument  is   determined  by  its
+instantaneous field  of view, sensitivity, latency of  imaging and availability.
+The AARTFAAC\footnote{see  www.aartfaac.org} array,  based on the  Low Frequency
+Array  (LOFAR, \citep{vanhaarlem2013lofar}  )  is among  the first  continuously
+operating,  low-latency   imaging  instruments  dedicated   24x7  for  transient
+detection, and currently has the highest figure of merit for blind low frequency
+radio  transient  searches. It  will  be  equipped  with a  transient  detection
+component operating on the derived  light curves of sources in short integration
+images.  \textbf{-- Short description of the TraP.--}
+
+In  this  paper,  we  describe   the  imaging  component  of  the  low  latency,
+real-timetransient detection pipeline of the instrument.  We begin by presenting
+the     imaging     capabilities     of     the    instrument     in     Section
+\ref{sec:The-AARTFAAC-All},  bringing  out  its  effectiveness  as  a  transient
+detector. We also  present the computational and latency  constraints due to the
+real-time nature of the instrument.  Section \ref{sec:All-sky-Imaging} lays down
+and evaluates  the parameters affecting  transient detection sensitivity  of the
+monitor. In Section \ref{sec:Imaging-results}, we present the performance of the
+imager  on  test observations,  and  evaluate  difference  imaging as  a  viable
+transient  detection technique.   A 24Hr  observation  has been  carried out  to
+establish  the instrument's spatial  sensitivity function,  and its  results are
+presented  in Section  \ref{sec:The-AARTFAAC-all-sky}. Finally,  we  present our
+conclusions in Section \ref{sec:conclusions}.
+
+\section{\label{sec:The-AARTFAAC-All}The AARTFAAC All Sky Monitor System Overview}
+ The AARTFAAC all sky monitor utilizes the antennas and analog front ends of the LOFAR telescope. Its salient features are presented in Table. TODO. It ensures continuous availability inspite of regular LOFAR observations via the insertion of a digital coupler, allowing per dipole, subbanded digital data to flow independently from the beamformed data utilized by LOFAR. All further processing including dipole level correlation, calibration, imaging and transient detection is carried out completely independently.
+  However, due to the sharing of analog elements, the band of observation, as well as the station dipole configuration is fixed by the ongoing LOFAR observation. Currently, there are two station configurations used by LOFAR, the LBA\_INNER and LBA\_OUTER.
+
+\section{\label{sec:All-sky-Imaging}All-sky Imaging for transient detection}
+
+\section{\label{sec:Imaging-results}Imaging results}
+
+\section{\label{sec:The-AARTFAAC-all-sky}The AARTFAAC all sky sensitivity}
+
+\section{\label{sec:discussion}Discussion}
+
+\section{\label{sec:conclusions}Conclusions}
+
+
+
+\begin {acknowledgements}
+
+This work  was funded  by the ERC  grant <num>  awarded to Prof.   Ralph Wijers,
+Universitiet Van  Amsterdam. We thank the  LOFAR team for  building an extremely
+configurable instrument,  allowing the collection  of dipole level raw  data for
+commissioning observations for the AARTFAAC. We thank The Netherlands Foundation
+for  Radio  Astronomy  (ASTRON)  for   support  provided  in  carrying  out  the
+commissioning observations. We thank Jown  Swinbank, Alexander van der Horst and
+Antonia Rowlinson for helpful comments.
+\end{acknowledgements}
+\bibliographystyle{aa}
+\bibliography{ref}
+
+\end{document}
